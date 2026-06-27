@@ -8,6 +8,7 @@ class Config:
         self.db_url = os.getenv("DB_URL")
         self.db_password = os.getenv("DB_PASSWORD")
         self.ssl_root_cert = os.getenv("DB_SSL_ROOT_CERT")
+        self.load_mode = (os.getenv("LOAD_MODE") or "skip").strip().lower()
 
     def validate(self):
         if not self.db_url:
@@ -17,6 +18,9 @@ class Config:
             raise ValueError(
                 "DB_URL still contains <PASSWORD-HIDDEN>. Set DB_PASSWORD in .env or replace the password in DB_URL."
             )
+
+        if self.load_mode not in {"skip", "upsert"}:
+            raise ValueError("Invalid LOAD_MODE. Use 'skip' or 'upsert'.")
 
     def connection_options(self):
         options = {}

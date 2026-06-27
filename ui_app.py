@@ -71,10 +71,10 @@ def run_etl_flow(source_csv_path: str, selected_mode: str) -> dict:
         validator = DataValidator()
 
         raw_df = extractor.extract()
-    missing_cols = REQUIRED_COLUMNS.difference(set(raw_df.columns))
-    if missing_cols:
-        ordered = ", ".join(sorted(missing_cols))
-        raise ValueError(f"Uploaded CSV missing required columns: {ordered}")
+        missing_cols = REQUIRED_COLUMNS.difference(set(raw_df.columns))
+        if missing_cols:
+                ordered = ", ".join(sorted(missing_cols))
+                raise ValueError(f"Uploaded CSV missing required columns: {ordered}")
 
         cleaned_df = cleaner.clean_dataframe(raw_df.copy())
         valid_df = validator.validate(cleaned_df.copy())
